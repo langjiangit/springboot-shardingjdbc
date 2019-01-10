@@ -56,6 +56,7 @@ public class DataSourceConfig {
         orderTableRuleConfig.setActualDataNodes("ds${0..1}.t_order${0..1}");
 
         // 配置分库 + 分表策略
+        //@see 分表策略 https://my.oschina.net/mdxlcj/blog/1835657
         orderTableRuleConfig.setDatabaseShardingStrategyConfig(new InlineShardingStrategyConfiguration("user_id", "ds${user_id % 2}"));
         orderTableRuleConfig.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("order_id", "t_order_${order_id % 2}"));
 
