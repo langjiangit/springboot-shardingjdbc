@@ -1,0 +1,44 @@
+server:
+  port: 9999
+
+mybatis:
+  type-aliases-package: com.xiao.domain.dto
+  mapper-locations: classpath:mapper/*Mapper.xml
+
+
+# 数据库连接相关配置 http://shardingsphere.io/document/current/cn/manual/sharding-jdbc/usage/sharding/
+# springbott2.x 不再支持这种变量 java.lang.ClassNotFoundException: org.springframework.boot.bind.RelaxedPropertyResolver
+# @see https://github.com/sharding-sphere/sharding-sphere/issues/623
+#sharding:
+#  jdbc:
+#    dataSources:
+#      ds0:
+#        type: org.apache.commons.dbcp.BasicDataSource
+#        driverClassName: com.mysql.jdbc.Driver
+#        url: jdbc:mysql://172.25.47.179:3306/demo_ds_0
+#        username: test
+#        password: 123456
+#      ds1:
+#        type: org.apache.commons.dbcp.BasicDataSource
+#        driverClassName: com.mysql.jdbc.Driver
+#        url: jdbc:mysql://172.25.47.179:3306/demo_ds_1
+#        username: test
+#        password: 123456
+#
+#      tables:
+#        t_order:
+#          actualDataNodes: ds${0..1}.t_order_${0..1}
+#          databaseStrategy:
+#            inline:
+#              shardingColumn: user_id
+#              algorithmInlineExpression: ds${user_id % 2}
+#          tableStrategy:
+#            inline:
+#              shardingColumn: order_id
+#              algorithmInlineExpression: t_order_${order_id % 2}
+
+
+
+
+
+
