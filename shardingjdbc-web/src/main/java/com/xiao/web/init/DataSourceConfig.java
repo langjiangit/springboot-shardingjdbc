@@ -3,7 +3,10 @@ package com.xiao.web.init;
 import io.shardingjdbc.core.api.ShardingDataSourceFactory;
 import io.shardingjdbc.core.api.config.ShardingRuleConfiguration;
 import io.shardingjdbc.core.api.config.TableRuleConfiguration;
+import io.shardingjdbc.core.api.config.strategy.ComplexShardingStrategyConfiguration;
+import io.shardingjdbc.core.api.config.strategy.HintShardingStrategyConfiguration;
 import io.shardingjdbc.core.api.config.strategy.InlineShardingStrategyConfiguration;
+import io.shardingjdbc.core.api.config.strategy.StandardShardingStrategyConfiguration;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.context.annotation.Bean;
@@ -53,12 +56,15 @@ public class DataSourceConfig {
         // 配置Order表规则
         TableRuleConfiguration orderTableRuleConfig = new TableRuleConfiguration();
         orderTableRuleConfig.setLogicTable("t_order");
-        orderTableRuleConfig.setActualDataNodes("ds${0..1}.t_order${0..1}");
+        orderTableRuleConfig.setActualDataNodes("ds${0..1}.t_order_${0..1}");
 
         // 配置分库 + 分表策略
-        //@see 分表策略 https://my.oschina.net/mdxlcj/blog/1835657
+        //@see 分表策略 https://www.jianshu.com/p/20f2c50bf8f5
         orderTableRuleConfig.setDatabaseShardingStrategyConfig(new InlineShardingStrategyConfiguration("user_id", "ds${user_id % 2}"));
-        orderTableRuleConfig.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("order_id", "t_order_${order_id % 2}"));
+
+        //简单规则, 复杂规则
+        //orderTableRuleConfig.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("order_id", "t_order_${order_id % 2}"));
+        orderTableRuleConfig.setTableShardingStrategyConfig(new StandardShardingStrategyConfiguration("order_id", MyPreciseShardingAlgorithm.class.getName()));
 
         // 配置分片规则
         ShardingRuleConfiguration shardingRuleConfig = new ShardingRuleConfiguration();
